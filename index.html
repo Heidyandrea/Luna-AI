@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luna AI — Tu tutora de inglés en WhatsApp</title>
+<meta name="description" content="Luna AI es una tutora de inglés con inteligencia artificial que te acompaña por WhatsApp: conversa contigo por texto o audio, corrige tus errores y recuerda tu progreso.">
+<meta property="og:title" content="Luna AI — Tu tutora de inglés en WhatsApp">
+<meta property="og:description" content="Practica inglés todos los días por WhatsApp, por texto o audio, con una tutora que recuerda tu progreso.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230b1026'/%3E%3Cpath d='M40 14a20 20 0 1 0 10 34A16 16 0 1 1 40 14z' fill='%23f3e9c6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#0b1026; --night-2:#121a3a; --ink:#e9ecf7; --muted:#a3abc9;
+    --moon:#f3e9c6; --lilac:#b9a7ff; --line:rgba(233,236,247,.12);
+    --card:rgba(255,255,255,.04); --wa:#25d366;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Manrope',system-ui,sans-serif;background:var(--night);color:var(--ink);line-height:1.6;overflow-x:hidden}
+  a{color:inherit}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+  /* stars */
+  .sky{position:fixed;inset:0;z-index:-1;background:
+      radial-gradient(1200px 600px at 80% -10%,rgba(185,167,255,.18),transparent 60%),
+      radial-gradient(900px 500px at -10% 30%,rgba(243,233,198,.07),transparent 60%),
+      var(--night)}
+  .sky::before,.sky::after{content:"";position:absolute;inset:0;background-image:
+      radial-gradient(1px 1px at 12% 18%,#fff9,transparent),radial-gradient(1px 1px at 72% 12%,#fff8,transparent),
+      radial-gradient(1.5px 1.5px at 40% 40%,#fffa,transparent),radial-gradient(1px 1px at 88% 52%,#fff7,transparent),
+      radial-gradient(1px 1px at 22% 72%,#fff8,transparent),radial-gradient(1.5px 1.5px at 60% 82%,#fff9,transparent),
+      radial-gradient(1px 1px at 92% 88%,#fff6,transparent),radial-gradient(1px 1px at 5% 92%,#fff7,transparent)}
+  .sky::after{transform:translate(17%,9%);opacity:.6}
+  header{display:flex;align-items:center;justify-content:space-between;padding:22px 0}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.3px;text-decoration:none}
+  .logo svg{width:30px;height:30px}
+  nav a{color:var(--muted);text-decoration:none;font-size:.95rem;margin-left:22px}
+  nav a:hover{color:var(--ink)}
+  .btn{display:inline-flex;align-items:center;gap:10px;background:var(--moon);color:var(--night);font-weight:700;
+      padding:14px 22px;border-radius:999px;text-decoration:none;transition:transform .2s,box-shadow .2s;box-shadow:0 8px 30px rgba(243,233,198,.18)}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(243,233,198,.28)}
+  .btn svg{width:20px;height:20px}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);box-shadow:none}
+  /* hero */
+  .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;padding:56px 0 90px}
+  .eyebrow{display:inline-block;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--lilac);margin-bottom:18px}
+  h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(2.3rem,5.4vw,3.9rem);line-height:1.08;margin-bottom:20px}
+  h1 em{font-style:italic;color:var(--moon);font-weight:400}
+  .lead{color:var(--muted);font-size:1.12rem;max-width:520px;margin-bottom:32px}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap}
+  .note{font-size:.85rem;color:var(--muted);margin-top:16px}
+  /* phone */
+  .phone{position:relative;justify-self:center;width:min(340px,100%);background:#0f1530;border:1px solid var(--line);border-radius:34px;padding:18px;
+      box-shadow:0 40px 80px rgba(0,0,0,.45),inset 0 0 0 6px #151d40}
+  .moonglow{position:absolute;width:220px;height:220px;border-radius:50%;right:-70px;top:-70px;z-index:-1;
+      background:radial-gradient(circle at 35% 35%,#fff6dd,var(--moon) 40%,rgba(243,233,198,0) 70%);filter:blur(2px);opacity:.85}
+  .chat-head{display:flex;align-items:center;gap:10px;padding:6px 6px 14px;border-bottom:1px solid var(--line);margin-bottom:14px}
+  .avatar{width:36px;height:36px;border-radius:50%;background:var(--night-2);display:grid;place-items:center}
+  .avatar svg{width:22px;height:22px}
+  .chat-head b{display:block;font-size:.95rem}.chat-head span{font-size:.75rem;color:var(--wa)}
+  .msg{max-width:86%;padding:10px 13px;border-radius:14px;font-size:.88rem;margin-bottom:10px;line-height:1.45}
+  .me{margin-left:auto;background:#1f6b4e;border-bottom-right-radius:4px}
+  .luna{background:#1b2350;border-bottom-left-radius:4px}
+  .luna .fix{display:block;color:var(--moon);font-weight:600}
+  .voice{display:flex;align-items:center;gap:8px}
+  .voice i{display:block;height:3px;border-radius:2px;background:#9fe0c4;flex:1;opacity:.8}
+  /* sections */
+  section{padding:80px 0;border-top:1px solid var(--line)}
+  h2{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.8rem,3.6vw,2.6rem);line-height:1.15;margin-bottom:14px}
+  .sub{color:var(--muted);max-width:620px;margin-bottom:44px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px}
+  .card .n{font-family:'Fraunces',serif;font-size:2rem;color:var(--lilac);line-height:1;margin-bottom:14px}
+  .card h3{font-size:1.08rem;margin-bottom:8px}
+  .card p{color:var(--muted);font-size:.95rem}
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+  .vs{display:grid;gap:12px}
+  .vs div{display:flex;gap:14px;align-items:flex-start;padding:16px 18px;border-radius:16px;background:var(--card);border:1px solid var(--line)}
+  .vs .x{color:#ff8f8f;font-weight:700}.vs .ok{color:var(--moon);font-weight:700}
+  .vs p{font-size:.95rem;color:var(--muted)} .vs strong{color:var(--ink)}
+  details{border:1px solid var(--line);border-radius:16px;padding:18px 22px;margin-bottom:12px;background:var(--card)}
+  summary{cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:16px}
+  summary::after{content:"+";color:var(--lilac);font-size:1.3rem;line-height:1}
+  details[open] summary::after{content:"−"}
+  details p{color:var(--muted);margin-top:12px;font-size:.95rem}
+  .final{text-align:center;padding:100px 0}
+  .final .lead{margin:0 auto 30px}
+  footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-size:.88rem}
+  footer .row{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  footer a{color:var(--muted);margin-left:18px}
+  @media (max-width:860px){
+    .hero,.split{grid-template-columns:1fr}
+    .grid3{grid-template-columns:1fr}
+    nav{display:none}
+    .hero{padding-top:28px}
+    footer a{margin:0 18px 0 0}
+  }
+</style>
+</head>
+<body>
+<div class="sky" aria-hidden="true"></div>
+
+<div class="wrap">
+  <header>
+    <a class="logo" href="/" aria-label="Luna AI">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M40 10a22 22 0 1 0 12 38A18 18 0 1 1 40 10z" fill="#f3e9c6"/></svg>
+      Luna AI
+    </a>
+    <nav>
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#metodo">Método</a>
+      <a href="#preguntas">Preguntas</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <div>
+      <span class="eyebrow">Tutora de inglés con IA · en WhatsApp</span>
+      <h1>Aprende inglés <em>conversando</em>, no memorizando.</h1>
+      <p class="lead">Luna es tu tutora personal en WhatsApp. Le escribes o le mandas un audio, te responde a tu nivel, corrige lo importante y recuerda en qué necesitas mejorar.</p>
+      <div class="cta-row">
+        <a class="btn" href="https://wa.me/593987854824?text=Hola%20Luna%2C%20quiero%20practicar%20ingl%C3%A9s" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.2-.2-.2-.4-.3z"/></svg>
+          Escribirle a Luna
+        </a>
+        <a class="btn ghost" href="#como-funciona">Ver cómo funciona</a>
+      </div>
+      <p class="note">Sin descargar apps. Funciona dentro de tu WhatsApp.</p>
+    </div>
+
+    <div class="phone" aria-label="Ejemplo de conversación con Luna">
+      <div class="moonglow"></div>
+      <div class="chat-head">
+        <div class="avatar"><svg viewBox="0 0 64 64"><path d="M40 10a22 22 0 1 0 12 38A18 18 0 1 1 40 10z" fill="#f3e9c6"/></svg></div>
+        <div><b>Luna AI</b><span>en línea</span></div>
+      </div>
+      <div class="msg luna">Hi! What did you do yesterday? 🌙</div>
+      <div class="msg me">Yesterday I go to the office and I have a meeting</div>
+      <div class="msg luna"><span class="fix">Yesterday I <u>went</u> to the office and I <u>had</u> a meeting.</span>Hablas del pasado, así que <i>go → went</i> y <i>have → had</i>. Now tell me: how was the meeting?</div>
+      <div class="msg me voice">▶ <i></i><i></i><i></i><i></i> 0:07</div>
+      <div class="msg luna">Great answer! I heard “it was long but useful”. Let’s keep going 👏</div>
+    </div>
+  </div>
+</div>
+
+<section id="como-funciona">
+  <div class="wrap">
+    <span class="eyebrow">Cómo funciona</span>
+    <h2>Tres pasos. Cinco minutos al día.</h2>
+    <p class="sub">Luna se adapta a ti desde el primer mensaje. No hay horarios, ni clases grabadas, ni listas de reglas.</p>
+    <div class="grid3">
+      <div class="card"><div class="n">01</div><h3>Le escribes a Luna</h3><p>Le cuentas para qué quieres el inglés: trabajo, viajes, estudios o vivir en otro país. Con unas preguntas sencillas estima tu nivel.</p></div>
+      <div class="card"><div class="n">02</div><h3>Practican conversando</h3><p>Responde por texto o con notas de voz. Luna conversa contigo a tu nivel y corrige lo que más importa, explicándotelo en español.</p></div>
+      <div class="card"><div class="n">03</div><h3>Ella recuerda tu progreso</h3><p>Guarda tus errores frecuentes y las frases que aprendes, y te las vuelve a traer en el momento justo para que se queden.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="metodo">
+  <div class="wrap split">
+    <div>
+      <span class="eyebrow">El método</span>
+      <h2>Como aprendiste español: con contexto, no con reglas.</h2>
+      <p class="sub">Tu cerebro adquiere un idioma cuando entiende mensajes reales y los usa. Por eso Luna trabaja con historias cortas, frases en contexto y repaso espaciado, en lugar de tablas gramaticales.</p>
+    </div>
+    <div class="vs">
+      <div><span class="x">✕</span><p><strong>Memorizar listas de vocabulario</strong> que olvidas en una semana.</p></div>
+      <div><span class="ok">✓</span><p><strong>Frases completas en contexto</strong>, repasadas justo antes de olvidarlas.</p></div>
+      <div><span class="x">✕</span><p><strong>Corregir cada detalle</strong> hasta que pierdes la confianza.</p></div>
+      <div><span class="ok">✓</span><p><strong>Corregir lo importante</strong> y darte otra oportunidad para practicarlo.</p></div>
+      <div><span class="x">✕</span><p><strong>Apps que repiten lo mismo</strong> para todos.</p></div>
+      <div><span class="ok">✓</span><p><strong>Práctica según tu objetivo</strong>: entrevistas, reuniones, viajes o tu vida diaria.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="preguntas">
+  <div class="wrap">
+    <span class="eyebrow">Preguntas frecuentes</span>
+    <h2>Lo que suelen preguntarnos</h2>
+    <div style="max-width:760px;margin-top:28px">
+      <details><summary>¿Necesito descargar una aplicación?</summary><p>No. Luna funciona dentro de WhatsApp. Solo guardas el número y le escribes.</p></details>
+      <details><summary>¿Puedo mandarle audios?</summary><p>Sí. Puedes responder con notas de voz: Luna transcribe lo que dijiste y te responde sobre tu gramática, tu vocabulario y tu forma de expresarte.</p></details>
+      <details><summary>¿Sirve si soy principiante?</summary><p>Sí. Luna ajusta el vocabulario, la longitud de las frases y la cantidad de español que usa según tus respuestas.</p></details>
+      <details><summary>¿Luna es una persona?</summary><p>No. Luna es una tutora de inteligencia artificial. Si necesitas ayuda con tu cuenta o con un pago, puedes escribir AYUDA y una persona del equipo te atenderá.</p></details>
+      <details><summary>¿Qué pasa con mis datos?</summary><p>Usamos tus mensajes únicamente para darte el servicio y personalizar tu práctica. Puedes pedir que borremos tus datos cuando quieras. Lee nuestra <a href="/privacidad">política de privacidad</a>.</p></details>
+    </div>
+  </div>
+</section>
+
+<div class="wrap final">
+  <h2>Tu primera conversación en inglés empieza hoy.</h2>
+  <p class="lead">Escríbele a Luna y descubre tu nivel en unos minutos.</p>
+  <a class="btn" href="https://wa.me/593987854824?text=Hola%20Luna%2C%20quiero%20practicar%20ingl%C3%A9s" target="_blank" rel="noopener">Escribirle a Luna por WhatsApp</a>
+</div>
+
+<footer>
+  <div class="wrap row">
+    <span>© 2026 Luna AI · Cuenca, Ecuador · <a href="mailto:contacto@englishwithheidy.com" style="margin:0">contacto@englishwithheidy.com</a></span>
+    <span><a href="/privacidad">Política de privacidad</a><a href="/terminos">Términos</a><a href="/privacidad#eliminar-datos">Eliminar mis datos</a></span>
+  </div>
+</footer>
+</body>
+</html>
